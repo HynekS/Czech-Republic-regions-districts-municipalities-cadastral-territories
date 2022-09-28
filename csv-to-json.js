@@ -12,28 +12,30 @@ fs.createReadStream(
   .pipe(parse({ delimiter: ";", from_line: 2 }))
   .on("data", function (row) {
     let [region, district, municipality, cadastralTerritory] = row;
-    let refObj = {
+
+    let keyMap = {
       regions: region,
       districts: district,
       municipalities: municipality,
       "cadastral territories": cadastralTerritory,
     };
-    let ref = csvData;
+
+    let currentRef = csvData;
 
     ["regions", "districts", "municipalities", "cadastral territories"].forEach(
       (elem) => {
-        if (ref[elem] === undefined) ref[elem] = [];
+        if (currentRef[elem] === undefined) currentRef[elem] = [];
 
-        let maybeExistingRecord = ref[elem].find(
-          (item) => item.name === refObj[elem]
+        let maybeExistingRecord = currentRef[elem].find(
+          (item) => item.name === keyMap[elem]
         );
 
         if (!maybeExistingRecord) {
-          let newRef = { name: refObj[elem] };
-          ref[elem].push(newRef);
-          ref = newRef;
+          let newRef = { name: keyMap[elem] };
+          currentRef[elem].push(newRef);
+          currentRef = newRef;
         } else {
-          ref = maybeExistingRecord;
+          currentRef = maybeExistingRecord;
         }
       }
     );
