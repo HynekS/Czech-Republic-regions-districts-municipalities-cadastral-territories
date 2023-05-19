@@ -17,12 +17,12 @@ fs.createReadStream(
       regions: region,
       districts: district,
       municipalities: municipality,
-      "cadastral territories": cadastralTerritory,
+      cadastral_territories: cadastralTerritory,
     };
 
     let currentRef = csvData;
 
-    ["regions", "districts", "municipalities", "cadastral territories"].forEach(
+    ["regions", "districts", "municipalities", "cadastral_territories"].forEach(
       (elem) => {
         if (currentRef[elem] === undefined) currentRef[elem] = [];
 
